@@ -19,6 +19,7 @@ gem 'kaminari'
 gem 'activemerchant', :require => 'active_merchant'
 #gem 'paypal-recurring'
 gem 'stripe'
+gem 'twitter-bootstrap-rails', :git => 'https://github.com/seyhunak/twitter-bootstrap-rails.git'
 
 group :assets do
   gem 'less-rails'
@@ -26,7 +27,6 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   gem 'therubyracer', '~> 0.10.2',  :platforms => :ruby
   gem 'uglifier', '>= 1.0.3'
-  gem 'twitter-bootstrap-rails', :git => 'https://github.com/seyhunak/twitter-bootstrap-rails.git'
 end
 
 group :development do
@@ -54,7 +54,7 @@ group :test do
 end
 
 group :production do
-  #gem 'unicorn', '>=3.2.1', :require => false
+  gem 'unicorn', '>=3.2.1', :require => false
   gem 'pg'
   gem 'heroku'
 end

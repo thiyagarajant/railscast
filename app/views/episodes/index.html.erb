@@ -111,7 +111,7 @@
           <span class='epi_note'><%= episode.description %>
 
             <span class = "epi_id">(<%="7 minutes"%>)</span></span><br>
-            <%if  current_user.present? && subscribed_user(episode) || episode.episode_type == 0 || current_user.purchased_at != nil %>
+            <%if  current_user.present? && (subscribed_user(episode) || episode.episode_type == 0 || current_user.purchased_at != nil) %>
             <span ><%= link_to "Watch Episode",episode.video.url, :class => 'btn epi_btn' %> </span>
             <span class ='span3'>
               <%= link_to "Read Episode",episode_path(episode), :class => 'btn epi_btn '%></span>
