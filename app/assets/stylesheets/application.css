@@ -1,0 +1,214 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require_self
+ *= require_tree .
+ */
+
+ .navbar .span4{
+ 	padding:10px 0px 0px 0px;
+ 	color:#999!important;
+ }
+  .navbar .span4 a{
+  	color:#999!important;
+  	text-decoration:underline;
+  }
+ .header_logo{
+ 	background-color: white;
+ 	padding:50px 0px 10px 70px;
+ }
+ .row{
+ 	margin-top:170px;
+ }
+ .span15{
+ 	margin:18px 0px 10px 0px;
+ }
+ .tab-menu .nav-tabs {
+ 	background-color: #EEE!important;
+ 	-webkit-border-top-left-radius: 8px;
+	-webkit-border-top-right-radius: 8px;
+ }
+ .tabs{
+
+ 	border:1px solid #EEE;
+
+ }
+ .tab-menu{
+ 	/*border-bottom:2px solid #EEE;
+ 	border-left:2px solid #EEE;
+ 	border-right:2px solid #EEE;*/
+ 	border:2px solid #EEE;
+ 	-webkit-border-top-left-radius: 8px;
+	-webkit-border-top-right-radius: 8px;
+ }
+ .span14{
+ 	margin-top:20px;
+ }
+ .user_cmt{
+ 	margin-left: 0px!important;
+ 	padding-left: 0px!important;
+ }
+ .span10 h1{
+ 	font-size: 24px;
+ }
+ .img{
+ 	width:100px;
+ 	height:150px;
+ 	border:1px solid black;
+ }
+ .span9{
+ 	margin-top: 10px;
+ }
+.navbar-inner{
+ 	border-bottom: solid 3px #DE9F00 !important;
+ 	min-height: 45px!important;
+	margin-bottom: 15px!important;
+	border-top: solid 1px white!important;
+	background: -webkit-gradient(linear, left top, left bottom, from(#5C5C5C), to(#111))!important;
+
+ }
+/*.span4{
+	margin: 20px 0px 0px 100px !important;
+}*/
+.dropdown-toggle{
+	color:white !important;
+}
+.search_bar{
+	float:left;
+	height:0px;
+	margin:5px 0px 5px 40px;
+}
+.search_bar input[type = submit]{
+	margin-bottom:10px;
+	height:24px;
+	padding-top:0px;
+}
+.search_bar input[type = text]{
+	height:18px;
+	margin-top:2px;
+}
+
+.flash_bar{
+	height:25px;
+	width:100%;
+	background-color: #267923 !important;
+	text-align: center;
+	margin:0px;
+	margin-bottom:20px;
+	color:white;
+	padding-top:10px;
+}
+.brand{
+	margin: 10px 90px 0px 0px;
+	color: #777!important;
+}
+.brand a{
+	color: #777!important;
+	text-decoration: underline;
+}
+
+
+.logo_bar{
+	margin: 10px 0px 0px 80px;
+}
+.container {
+	margin-right:40px!important;
+}
+.alert{
+	color:black!important;
+}
+.main_cmt{
+	width: 770px!important;
+}
+.sub1_cmt{
+	width:720px!important;
+}
+.sub2_cmt{
+	width:680px!important;
+}
+.sub3_cmt{
+	width:640px!important;
+}
+.sub4_cmt{
+	width:600px!important;
+}
+
+.navbar .nav > li > a{
+	color:white!important;
+}
+.feedback_table{
+	margin-top:50px;
+width:700px;
+}
+.feedback_table th{
+	text-align: right;
+}
+#feedback{
+	background-color: #EEE!important;
+	padding-bottom:10px;
+	border :1px solid black;
+	-webkit-border-top-left-radius: 15px;
+-webkit-border-top-right-radius: 15px;
+float:left;
+margin-top:40px;
+}
+.bar{
+	margin:0px;
+	text-align: center;
+	font-size: 24px;
+	font-family: timesnewroman;
+	background-color: #CCC;
+	-webkit-border-top-left-radius: 15px;
+-webkit-border-top-right-radius: 15px;
+}
+.feedback_mail{
+	margin:20px 0px 0px 20px;
+}
+.feedback_info{
+	margin:30px 30px 0px 0px ;
+	float:right;
+	width:400px;
+}
+.filter1{
+	border: solid 1px #999;
+border-radius: 10px;
+-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+background-color: #DDD;
+padding: 2px 8px;
+margin-bottom: 10px;
+font-size: 12px;
+}
+.no_records{
+	margin:5px 0px 0px 100px;
+}
+.footer{
+	text-align: center;
+	font-size: 12px;
+	margin-top:30px;
+}
+.grid{
+	height:120px;
+	width:100px;
+	margin:10px;
+}
+#search{
+
+}
+
+
+
+
+
+.star-rating th{
+	padding-left:10px;
+	margin-bottom: 10px;
+}
+

@@ -1,0 +1,21 @@
+<div class= "span8">
+
+<%= simple_form_for @user, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :name %>
+  <%= f.input :email %>
+  <%= f.input :password %>
+  <%= f.input :password_confirmation %>
+  <%= f.input :mobile_no %>
+  <% unless @user.id == current_user.id %>
+  <%= f.input :role_name, :collection => ['user', 'admin'], :prompt => "--select--"  %>
+  
+  <div class="form-actions">
+    <%= f.button :submit, :class => 'btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                users_path, :class => 'btn' %>
+  </div>
+  <% else %>
+      <span class = "span14"><%= f.button :submit, :class => 'btn' %></span>
+  <%end%>
+<% end %>
+</div>

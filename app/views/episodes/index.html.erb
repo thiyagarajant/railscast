@@ -1,0 +1,173 @@
+<%- model_class = Episode -%>
+<div class = "filter " style='position:fixed;top: 155px;padding-top: 5px;' >
+  <%if params[:category_id].present? || params[:q].present? || params[:episode_type] %>
+    <span > <b>Applied Filters: </b>
+      <% if params[:q]!= nil %>
+        <span class = 'filter1'>
+        <%= params[:q]%><b style = "padding-left:10px">
+        <%= link_to "x" , {:controller => 'episodes',:action => 'index',:q => nil,:category_id => params[:category_id], :episode_type => params[:episode_type] } %></b>
+        </span>
+      <%end%>
+      <% if params[:episode_type]!= nil %>
+        <span class = 'filter1'>
+        <%= epi_type(params[:episode_type])%><b style = "padding-left:10px">
+        <%= link_to "x" , {:controller => 'episodes',:action => 'index',:episode_type => nil,:category_id => params[:category_id], :q => params[:q] } %></b>
+        </span>
+      <%end%>
+      <%if params[:category_id].present?%>
+        <span class = 'filter1'>
+        <%= category_name(params[:category_id])%><b style = "padding-left:10px">
+        <%= link_to "x" ,{:controller => 'episodes',:action => 'index',
+          :q => params[:q],:category_id => "", :episode_type => params[:episode_type] }%></b>
+        </span>
+      <%end%>
+    </span>
+  <%end%>
+  <span class='offset7' style='color:#DE9F00;font-weight:bold'><%= @episodes.count %> Episodes</span>
+</div>
+
+<div class="epi_table span9" >
+
+  <% if @episodes.count < 1 %>
+    <span class = "no_records">No episodes found.<%=link_to "See all episodes.",
+    episodes_path%></span>
+  <%end%>
+
+  <% if params[:view_name] == 'grid' %>
+
+   <% @episodes.each do |episode| %>
+
+   <!--<%Rails.cache.fetch("link_to_episode_#{episode}") %> -->
+
+     <span class = "span2 pull-left">
+        <%= link_to (image_tag episode.picture.url(:thumb),:class => 'row-fluid grid'),
+        episode_path(episode)  %>
+        <%= "#{episode.id} "%><%= link_to " #{episode.title}", episode_path(episode) %>
+      </span>
+      <%end%>
+
+  <% elsif params[:view_name] == 'line' %>
+
+    <table class="table epi_line_view span9 table-bordered" >
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Comments</th>
+          <th>Duration</th>
+          <th>Released</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @episodes.each do |episode| %>
+          <tr>
+            <td><%= episode.id %></td>
+            <td><%= link_to episode.title, episode_path(episode) %></td>
+            <td><%= comment_count(episode)%> comments</td>
+            <td><%= "7 minutes"%></td>
+            <td><%= episode.created_at.strftime("%b %d %Y") %></td>
+            <%if current_user.role_name=="admin"%>
+              <td><%= link_to "edit", edit_episode_path(episode), :class => "btn btn-mini"%></td>
+              <td><%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      episode_path(episode),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-mini btn-danger' %></td>
+            <%end%>
+          </tr>
+        <% end %>
+        </tbody>
+    </table>
+
+  <% else %>
+
+    <% @episodes.each do |episode| %>
+
+      <div class='span10 row-fluid'>
+        <%= image_tag episode.picture.url(:thumb), :class => 'span3 img' %>
+        <span class = "span9">
+          <span class = "epi_id">Episode #<%= episode.id %> - <%= episode.created_at.strftime("%B %d %Y") %>- <%= comment_count(episode)%>Comments</span>
+
+           <span class = "pull-right like_div"><%= button_tag "#{vote_for_like(episode)} Likes", :class => "btn-success like " %>
+           <%= button_tag "#{episode.view_count} Views", :class => "btn like " %></span>
+            <table class='star-rating pull-right'>
+              <tr> <th>Rating</th></tr><tr><th>
+
+              <% value = 5 - episode.get_rating.to_i %>
+              <% episode.get_rating.to_i.times do |s| %>
+                  <%= image_tag 'star-on.png', :class => 'rating', :id => "rate#{s}" %>
+                <% end %>
+
+                <% value.times do |s| %>
+                  <%= image_tag 'star-off.png', :class => 'rating', :id => "rate#{s}" %>
+                <% end %>
+                  </th> </tr>
+            </table>
+
+
+            <br>
+
+          <span class="epi_title"><%= link_to episode.title, episode_path(episode) %></span> <br>
+          <span class='epi_note'><%= episode.description %>
+
+            <span class = "epi_id">(<%="7 minutes"%>)</span></span><br>
+            <%if  current_user.present? && subscribed_user(episode) || episode.episode_type == 0 || current_user.purchased_at != nil %>
+            <span ><%= link_to "Watch Episode",episode.video.url, :class => 'btn epi_btn' %> </span>
+            <span class ='span3'>
+              <%= link_to "Read Episode",episode_path(episode), :class => 'btn epi_btn '%></span>
+             </span>
+          <% else %>
+             <span ><%= link_to "Subscribe to Watch Episode","/subscriptions?id=#{episode.id}", :class => 'btn epi_btn btn-primary ' %>
+
+          <% end %>
+        </span>
+
+      </div>
+      <span class = "span9"> <hr></span>
+    <%end%>
+  <%end%>
+</div>
+<div class = "fix span2  pull-right ">
+  <div class = "change_view span2   ">
+    View
+    <span class="view"><%= link_to (image_tag "normal.png"), {:controller => 'episodes',
+      :action => 'index', :view_name => 'normal', :q => params[:q],
+      :category_id => params[:category_id], :episode_type => params[:episode_type] } %></span>
+    <span class="view"><%= link_to (image_tag "line.png"), {:controller => 'episodes',
+      :action => 'index', :view_name => 'line', :q => params[:q],
+      :category_id => params[:category_id], :episode_type => params[:episode_type] } %></span>
+    <span class="view"><%= link_to (image_tag "grid.png"), {:controller => 'episodes',
+      :action => 'index', :view_name => 'grid', :q => params[:q],
+      :category_id => params[:category_id], :episode_type => params[:episode_type] } %></span>
+  </div>
+   <div class = "category_list span2  ">
+    <h3>Types</h3>
+    <ul>
+
+
+    <li><%= link_to "Free Episodes", {:controller => 'episodes',:action => 'index',
+      :q => params[:q], :category_id => params[:category_id],:view_name => params[:view_name],
+      :episode_type => 0 }, :class => "mylink"%>  </li>
+    <li><%= link_to "Pro Episodes", {:controller => 'episodes',:action => 'index',
+      :q => params[:q], :category_id => params[:category_id],:view_name => params[:view_name],
+      :episode_type => 1 }, :class => "mylink"%>  </li>
+    <li><%= link_to "Revices Episodes", {:controller => 'episodes',:action => 'index',
+      :q => params[:q], :category_id => params[:category_id],:view_name => params[:view_name],
+      :episode_type => 2 }, :class => "mylink"%>  </li>
+    <ul>
+  </div>
+  <div class = "category_list span2  ">
+    <h3>Categories</h3>
+    <ul>
+
+      <% cache("all_categories_#{params[:q]}") do %>
+    <% category_list.each do |e| %>
+
+    <li><%= link_to e.name, {:controller => 'episodes',:action => 'index',
+      :q => params[:q], :category_id => e,:view_name => params[:view_name],
+      :episode_type => params[:episode_type] }, :id => "mylink#{e.id}", :class => "mylink"%>  </li>
+    <% end %><ul>
+    <%end%>
+  </div>
+</div>
+

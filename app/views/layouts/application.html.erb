@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= content_for?(:title) ? yield(:title) : "Railscast" %></title>
+    <%= stylesheet_link_tag "application", :media => "all" %>
+  </head>
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <span class = 'span4 pull-right'>
+        <%if current_user == nil %>
+        <%=link_to "Login", "/login" , :class => "pull-right span1"%>
+        <%else%>
+        Logged in as
+        <%= link_to "#{current_user.name}","/users/#{current_user.id}"  %> |
+        <%= link_to "Recent Comments","/comments"  %> |
+        <%= link_to "Log Out","/logout"  %>
+        <%end%>
+      </span>
+
+      <div class = "header_logo">
+      <a href="#">
+          <%= link_to (image_tag "railscasts.jpg"), "/episodes"%>
+
+        </a>
+      <span class = "span2 pull-right">
+        <%= link_to image_tag("fb.png"), "/auth/facebook", title: 'follow on facebook'%>
+        <%= link_to image_tag("twitter.png"), "/auth/twitter", title: 'follow on twitter'%>
+        <%= link_to image_tag("g2.jpg"), "/auth/google", title: 'follow on google'%>
+      </span>
+      </div>
+      <div class="navbar-inner ">
+        <div class="container span12 offset1">
+
+          <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <div class="container nav-collapse">
+            <span class = "pull-left">
+          <%= form_tag("/episodes", :method => :get, :class => 'search_bar') do %>
+        <%= text_field_tag :q, params[:q], :id => 'search', :class=>"span4"%>
+        <%= submit_tag "Seach Episodes"%>
+      <% end %>
+    </span>
+            <ul class="nav pull-right">
+              <% if current_user.present?%>
+              <li><%= link_to "Episodes", "/episodes?view_name=line"  %></li>
+              <li><%= link_to "Users", "/users"  %></li>
+              <li><%= link_to "Myprofile", "/users/#{current_user.id}" %></li>
+              <%else%>
+              <li><%= link_to "Search Episodes", "/episodes"  %></li>
+              <li><%= link_to "About", "/about"  %></li>
+              <li><%= link_to "Feedback", "/feedbacks/new"  %></li>
+              <%end%>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container pull-left offset1">
+        <div class="row">
+          <div class="span12 ">
+            <%if  flash[:alert].present? %>
+            <span class = "flash_bar"><%= bootstrap_flash %></span>
+            <%else%>
+            <span class = "flash_bar"><%= bootstrap_flash %></span>
+            <%end%>
+            <%= yield %>
+          </div>
+
+        </div><!--/row-->
+
+      <footer >
+        <p class ="footer" >&copy; 2013 RailsCasts - Privacy Policy - Hosted by Linode</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    <!-- Javascripts
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+      <%= javascript_include_tag "application" %>
+       <%= javascript_include_tag "https://js.stripe.com/v1/", "application" %>
+  <%= csrf_meta_tags %>
+  <%= tag :meta, :name => "stripe-key", :content => "pk_test_OKFJZIN1QWIv8kyckLJuVxdP" %>
+
+
+  </body>
+</html>

@@ -1,0 +1,25 @@
+<%- model_class = User -%>
+  <div class = "span10 "><h1><%="#{current_user.name}'s Profile"%></h1></div>
+  <div class= "span8"><p><%= link_to "Edit Profile", edit_user_path(@user)%> | 
+      <%= link_to "Log Out", "logout" %></p>
+    <p><h5>This is your profile.</h5></p>
+    <% if current_user.login!= nil %>
+    <p> <%= "#{current_user.login.provider} User"%> : <%=link_to "#{current_user.name}", "#"%></p>
+    <%end%>
+    <p><h5> Comments by <%= "#{current_user.name}" %></h5></p>
+  </div>
+
+  <div class = "span10">
+    <% current_user.comments.reverse_each do |x| %>
+      <div id = "comment_disp", class = "main_cmt user_cmt">
+        <div class ="comt ">
+          <div class = 'comment_border '> <b class = "comment_name"><%= current_user.name %> </b> on 
+            <b class = "comment_name">
+              <% s =  Episode.find(x.episode_id) %>
+           <%= "##{s.id} #{s.title} " %></b> 
+           <%= distance_of_time_in_words(x.created_at, Time.now)%> ago</div>
+          <span class = "text"><%= x.description%></span><br>
+        </div>
+      </div>
+    <%end%>
+  </div>

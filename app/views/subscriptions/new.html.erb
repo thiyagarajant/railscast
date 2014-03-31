@@ -1,0 +1,29 @@
+
+
+
+
+<%= simple_form_for @subscription,:method => 'post', :html => { :class => 'form-horizontal' } do |f| %>
+ <%= f.hidden_field :plan_id %>
+  <div class="field">
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+  </div>
+  <div class="field">
+      <%= label_tag :card_number, "Credit Card Number " %>
+      <%= f.text_field :card_number, name: nil %>
+  </div>
+  <div class="field">
+      <%= label_tag :card_code, "Security Code on Card (CVV)" %>
+      <%= text_field_tag :card_code, nil, name: nil %>
+  </div>
+<%= hidden_field_tag :id , params[:id]%>
+  <%= f.label :card_expires_on %>
+  <%= f.date_select :card_expires_on, :discard_day => true, :start_year => Date.today.year,
+                    :end_year => (Date.today.year+10), :add_month_numbers => true %>
+
+  <div class="form-actions">
+    <%= f.button :submit, :class => 'btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                subscriptions_path, :class => 'btn' %>
+  </div>
+<% end %>

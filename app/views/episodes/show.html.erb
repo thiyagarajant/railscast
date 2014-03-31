@@ -1,0 +1,137 @@
+<%- model_class = Episode -%>
+
+<!-- <span class = "span2 pull-right">
+</span> -->
+
+<table class='star-rating pull-right'>
+  <% rate =  @episode.stars.where(:user_id => current_user.id).last %>
+  <tr> <th> Rating</th></tr><tr><th>
+  <% if rate == nil  %>
+    <% (1..5).each do |s| %>
+      <%= image_tag 'star-off.png', :class => 'rating', :id => "rate#{s}",
+        :onmouseover =>"change_star_image(#{s}, #{@episode.id})",:value => s %>
+    <% end %>
+  <%else%>
+    <% value = 5 - rate.rating.to_i %>
+    <% rate.rating.to_i.times do |s| %>
+      <%= image_tag 'star-on.png', :class => 'rating', :id => "rate#{s}" %>
+    <% end %>
+    <% value.times do |s| %>
+      <%= image_tag 'star-off.png', :class => 'rating', :id => "rate#{s}" %>
+    <% end %>
+  <%end%>
+  </th> </tr>
+</table>
+
+<div>
+    <div class='span12 row-fluid'>
+       <%= image_tag @episode.picture.url(:thumb), :class => 'span3 img' %>
+      <span class = "span8">
+        <span class = "epi_id">Episode #<%= @episode.id %> - <%= @episode.created_at.strftime("%B %d %Y") %>- <%= comment_count(@episode)%>Comments</span><br>
+        <span class="epi_title"><%=  @episode.title %></span><br>
+        <span class='epi_note'><%= @episode.description %></span><br>
+        <%#raise [].inspect%>
+        <%if  current_user.present? && subscribed_user(@episode) || @episode.episode_type == 0 || current_user.purchased_at != nil %>
+        <span class = ' '><%=link_to "Click here to play", @episode.video.url, :class => "btn epi_btn" %></span>
+        <%else%>
+             <span ><%= link_to "Subscribe to Watch Episode","/subscriptions?id=#{@episode.id}", :class => 'btn epi_btn btn-primary ' %>
+        <% end %>
+        <span class = 'like pull-right', text = <%="#{@episode.id}"%>>Was this episode useful to you?
+          <%=button_tag "Yes", :class => "btn key", :value => 1 %>
+          <%=button_tag "No", :class => "btn key", :value => 0 %></span>
+          <span class = 'feed pull-right'>Thanks for your feedback!</span>
+      </span>
+    </div>
+</div><br>
+
+<div class = "span9 tab-menu">
+
+  <ul class="nav nav-tabs" id="myTab">
+    <li ><a href="#note" data-toggle="tab">Note</a></li>
+    <li class = "active"><a href="#comment" data-toggle="tab">
+      <%="#{comment_count(@episode) }"%> Comments</a></li>
+    <li><a href="#same" data-toggle="tab">Similar Episodes</a></li>
+  </ul>
+
+  <div class="tab-content span10">
+    <div class="tab-pane span8  " id="note">
+      <div id="tabs1-note", class="span8">
+         <%= @episode.note %>
+      </div>
+    </div>
+
+    <div class="tab-pane span8 active" id="comment">
+       <% @episode.nested_comments.each do |f| %>
+          <% if f.level ==0  %>
+          <div id = "comment_disp", class = "main_cmt pull-right ">
+            <%elsif f.level ==1 %>
+            <div id = "comment_disp", class = "sub1_cmt pull-right">
+            <%elsif f.level ==2 %>
+             <div id = "comment_disp", class = "sub2_cmt pull-right">
+            <%elsif f.level ==3 %>
+             <div id = "comment_disp", class = "sub3_cmt pull-right">
+              <%elsif f.level ==4 %>
+             <div id = "comment_disp", class = "sub4_cmt pull-right">
+              <%elsif f.level ==0 && f.parent_id == 0 %>
+              <div id = "comment_disp", class = "sub3_cmt pull-right">
+            <%end%>
+
+            <div id = "comment_name">
+              <div class = 'comment_border'> <b class = "comment_name"><%= f.name %> </b> on
+
+              <%= distance_of_time_in_words(f.created_at, Time.now)%> ago</div>
+            </div>
+            <p style="margin:3px 0px 3px 20px">
+              <%= f.description%>
+            </p>
+            <%= button_tag "reply" , :class => 'comment_reply'%>
+          </div>
+           <div class ="comt reply hi ">
+            <div class = 'comment_border span6'> <b class = "comment_name"><%= current_user.name %> </b> on
+               <%= f.created_at.strftime("%Y-%m-%d %H:%M:%S")%></div>
+
+            <%= form_for (@comment) do |x|%>
+                <%= x.text_area :description, :size => "60*100"%><br>
+                <%= x.hidden_field :episode_id, :value => "#{@episode.id}"%>
+                <%= x.hidden_field :name, :value => current_user.name%>
+                <%= x.hidden_field :parent_id,  :value => f.id %>
+                <%= x.hidden_field :user_id, :value => current_user.id%>
+                <b > <%= x.submit "Post Comment" %></b>
+            <%end%>
+          </div>
+        <%end%>
+
+        <div class ="comt">
+          <div class = 'comment_border span6'> <b class = "comment_name"><%= current_user.name %> </b> on
+            <b class = "comment_name">
+           <%= "##{@episode.id} #{@episode.title} " %></b>  <%= Time.now.strftime("%Y-%m-%d %H:%M:%S")%></div>
+          <%= form_for (@comment) do |x|%>
+          <%= x.text_area :description, :size => "60*100"%><br>
+          <%= x.hidden_field :episode_id, :value => "#{@episode.id}"%>
+          <%= x.hidden_field :name, :value => current_user.name%>
+          <%= x.hidden_field :user_id, :value => current_user.id%>
+          <b > <%= x.submit "Post Comment" %></b>
+          <%end%>
+        </div>
+    </div>
+
+    <div class="tab-pane span8 " id="same">
+
+      <% episodes_list(find_category(params[:id]), params[:id]).each do |episode| %>
+        <div class='span5 row-fluid'>
+          <%= image_tag episode.picture.url(:thumb), :class => 'span3 img' %>
+          <span class = "span9">
+            <span class = "epi_id">Episode #<%= episode.id %> - <%= episode.created_at.strftime("%B %d %Y") %>- <%= comment_count(episode)%>Comments</span><br>
+            <span class="epi_title"><%= link_to episode.title, episode_path(episode) %></span><br>
+            <span class='epi_note'><%= episode.description %>  <span class = "epi_id">(<%="7 minutes"%>)</span></span><br>
+            <span class = 'btn epi_btn span3'><%= link_to "Watch Episode",episode.video.url %> </span>
+            <span class = 'btn  epi_btn span3'><%= link_to "Read Episode",episode_path(episode) %></span>
+          </span><span class = "span12"> <hr></span>
+        </div>
+      <%end%>
+
+    </div>
+
+  </div>
+</div>
+

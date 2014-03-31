@@ -1,0 +1,28 @@
+<div id = "feedback", class = "span8">
+  <h2 class = "bar  row-fluid"> Feeadback </h2>
+  <div class = "feedback_mail span8 row-fluid">
+    You can also contact <%= link_to "@railscasts", "http://facebook.com/railscasts" %> on Facebook, or send an email to <%= mail_to "feedback@railscasts.com" %>.
+  </div>
+    <%= simple_form_for @feedback, :html => { :class => 'form-horizontal span8' } do |f| %>
+    <table class = "feedback_table span6"><tr><th>Your Name </th><td><%= f.text_field( "name") %>
+      <span class= "error"> <%= @feedback.errors[:name].to_sentence %></span></td></tr>
+           <tr><th>Your Email Address </th><td><%= f.email_field( "email") %>
+            <span class= "error"> <%= @feedback.errors[:email].to_sentence %></span></td></tr>
+           <tr><th>Message </th><td><%= f.text_area( :message ,  :size => "50x10")%>
+            <span class= "error"> <%= @feedback.errors[:message].to_sentence %></span></td></tr>
+           <tr><th></th><td><%= f.submit %></td></tr>
+    </table>
+    <%end%>
+</div>
+<div class = "feedback_info span3">
+  <h4>Please send feedback about:</h4>
+
+<ul><li>Problems with existing episodes</li>
+<li>Ideas for future episodes</li>
+<li>Anything about this site</li></ul><br>
+Unfortunately I am unable to answer generic Rails questions which are not specific to RailsCasts. For this I recommend asking on one of the following forums.
+<br>
+<ul><li>Rails Talk Mailing List</li>
+<li>Stack Overflow</li>
+<li>Rails Forum</li></ul>
+</div>

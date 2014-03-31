@@ -1,0 +1,36 @@
+
+<div class = "span8 center offset2">
+  <div class = "">
+    <span class= "pull-left"><%= image_tag "pro.png" %></span>
+    <div class= "logo_txt"><b>Introducing RailsCasts Pro</b> – more RailsCasts goodness every week for just $9 per month. Subscribe now to support Ryan Bates as he brings you more quality screencasts.</div>
+  </div>
+  <div class = "box"><b>Extra advanced episode each week</b>
+  <p> Each week a new pro episode will be released which dives deeper into advanced topics such as deployment, performance, testing, code walkthroughs, best practices, and more! Subscription includes all previous
+    <%= link_to "pro episodes" , {:controller =>'episodes',:action =>'index', :episode_type => 'Pro'}%>.
+  </p>
+  </div>
+  <div class = "box">
+      <b>Revised versions of older episodes</b><p>
+    A revised version of an out-of-date episode will also be released every other week. This episode is entirely re-recorded to bring it up to date with the latest Rails version and widescreen video format. Subscription includes all previous  <%= link_to "Reviced episodes" , {:controller =>'episodes',:action =>'index', :episode_type => 'reviced'}%>.</p>
+  </div>
+  <div class = "  sub_note">
+    Unlock all <b>pro</b> and <b>revised</b> episodes by <%= link_to "subscribing today!","subscriptions/new?id=#{params[:id]}" %>
+    <br><br>
+    <%= link_to "already have an subscription?", "#" %> <br>OR
+  </div>
+
+  <div><%= link_to (button_tag "Subscribe Railscasts Pro", :class=> "btn-primary span3 offset2 btn"), "/subscriptions/new?id=#{params[:id]}" %>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
