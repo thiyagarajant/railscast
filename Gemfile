@@ -55,4 +55,6 @@ end
 
 group :production do
   gem 'unicorn', '>=3.2.1', :require => false
+  gem 'pg'
+  gem 'heroku'
 end
