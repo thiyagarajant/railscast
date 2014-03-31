@@ -11,7 +11,7 @@ subscription = {
       $('input[type=submit]').attr('disabled', true);
       return subscription.processCard();
     });
-  },alert("hi");
+  },
   processCard: function() {
     var card;
     card = {
